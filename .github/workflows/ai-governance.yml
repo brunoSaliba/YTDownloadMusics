@@ -1,0 +1,75 @@
+name: AI Governance
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+    inputs:
+      task_id:
+        description: Task ID, e.g. FEAT-001
+        required: true
+        type: string
+      stage:
+        description: Governance stage
+        required: true
+        default: pr
+        type: choice
+        options:
+          - pr
+          - production
+          - post-production
+
+permissions:
+  contents: read
+
+jobs:
+  protocol:
+    name: Protocol gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0
+
+      - name: Resolve task ID
+        id: task
+        shell: bash
+        env:
+          MANUAL_TASK_ID: ${{ inputs.task_id }}
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          set -euo pipefail
+          if [[ -n "${MANUAL_TASK_ID:-}" ]]; then
+            TASK_ID="$MANUAL_TASK_ID"
+          elif [[ "$HEAD_REF" =~ (PROJ|HOTFIX|BUG|TASK|FEAT|EPIC)-[0-9]{3,} ]]; then
+            TASK_ID="${BASH_REMATCH[0]}"
+          else
+            echo "Branch name must include a task ID such as FEAT-001." >&2
+            exit 1
+          fi
+          echo "task_id=$TASK_ID" >> "$GITHUB_OUTPUT"
+
+      - name: Resolve governance stage
+        id: stage
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          MANUAL_STAGE: ${{ inputs.stage }}
+        run: |
+          set -euo pipefail
+          if [[ "$EVENT_NAME" == "pull_request" ]]; then
+            STAGE="pr"
+          else
+            STAGE="${MANUAL_STAGE:-pr}"
+          fi
+          echo "stage=$STAGE" >> "$GITHUB_OUTPUT"
+
+      - name: Validate protocol state, scope, external actions and secrets
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/aip.py validate \
+            --task "${{ steps.task.outputs.task_id }}" \
+            --base "${{ github.event.pull_request.base.sha || 'origin/main' }}" \
+            --stage "${{ steps.stage.outputs.stage }}"

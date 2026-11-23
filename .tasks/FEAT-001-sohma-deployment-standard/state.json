@@ -1,0 +1,83 @@
+{
+  "schema_version": 3,
+  "id": "FEAT-001",
+  "title": "Add SOHMA-style deployment standard",
+  "track": "FEATURE",
+  "complexity": 4,
+  "phase": "ready_for_pr",
+  "blocked": false,
+  "block_reason": null,
+  "security": {
+    "risk": "high",
+    "security_sensitive": true,
+    "threat_model_required": true,
+    "security_review_required": true
+  },
+  "gates": {
+    "definition": {
+      "status": "approved",
+      "approved_by": "Bruno Saliba",
+      "approved_at": "2026-08-26T13:01:57+00:00"
+    },
+    "plan": {
+      "status": "approved",
+      "approved_by": "Bruno Saliba",
+      "approved_at": "2026-08-26T13:02:00+00:00"
+    },
+    "security": {
+      "status": "approved",
+      "approved_by": "Bruno Saliba",
+      "approved_at": "2026-08-26T21:05:18+00:00"
+    },
+    "production": {
+      "status": "not_required",
+      "approved_by": null,
+      "approved_at": null
+    }
+  },
+  "repo_write_scope": [
+    "AGENTS.md",
+    ".ai/deployment-standard.md",
+    ".ai/platforms/bneli-vps.md",
+    ".ai/workflows/init-project.md",
+    ".ai/workflows/init-existing-project.md",
+    ".ai/workflows/production-change.md",
+    ".tasks/FEAT-001-sohma-deployment-standard/**"
+  ],
+  "status": {
+    "product": "completed",
+    "specification": "completed",
+    "architecture": "completed",
+    "artifact_review": "completed",
+    "threat_model": "completed",
+    "planning": "completed",
+    "implementation": "completed",
+    "testing": "completed",
+    "verification": "completed",
+    "code_review": "completed",
+    "security_review": "completed",
+    "retrospective": "completed",
+    "production_plan": "not_required",
+    "production_verification": "not_required"
+  },
+  "effects": {
+    "repo_write": true,
+    "external_write": false,
+    "production_change": false,
+    "destructive": false,
+    "security_sensitive": true
+  },
+  "external_actions": {
+    "allowed": [],
+    "evidence": []
+  },
+  "continuity": {
+    "last_agent": "Cursor Grok 4.6",
+    "current_unit": "Independent verification, reviews, and retrospective against main implementation",
+    "next_action": "Human Security Gate. security-review.md is reviewer APPROVED with explicit residual-risk acceptance required; it is not gate approval.",
+    "last_checkpoint": "001-checkpoint.json",
+    "last_checkpoint_at": "2026-08-26T20:48:13+00:00",
+    "last_handoff_at": "2026-08-26T20:48:13+00:00"
+  },
+  "updated_at": "2026-08-26T21:05:18+00:00"
+}

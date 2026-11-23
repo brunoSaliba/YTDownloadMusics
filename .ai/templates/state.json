@@ -1,0 +1,74 @@
+{
+  "schema_version": 4,
+  "id": "TASK-ID",
+  "title": "Task title",
+  "track": "FEATURE",
+  "complexity": 4,
+  "phase": "planning",
+  "blocked": false,
+  "block_reason": null,
+  "security": {
+    "risk": "medium",
+    "security_sensitive": false,
+    "threat_model_required": false,
+    "security_review_required": false
+  },
+  "gates": {
+    "definition": {
+      "status": "not_required",
+      "approved_by": null,
+      "approved_at": null
+    },
+    "plan": {
+      "status": "pending",
+      "approved_by": null,
+      "approved_at": null
+    },
+    "security": {
+      "status": "not_required",
+      "approved_by": null,
+      "approved_at": null
+    },
+    "production": {
+      "status": "not_required",
+      "approved_by": null,
+      "approved_at": null
+    }
+  },
+  "repo_write_scope": [],
+  "status": {
+    "product": "not_required",
+    "specification": "not_required",
+    "architecture": "not_required",
+    "artifact_review": "not_required",
+    "threat_model": "pending",
+    "planning": "pending",
+    "implementation": "blocked",
+    "testing": "pending",
+    "verification": "not_required",
+    "code_review": "pending",
+    "security_review": "not_required",
+    "retrospective": "not_required",
+    "production_plan": "not_required",
+    "production_verification": "not_required"
+  },
+  "effects": {
+    "repo_write": true,
+    "external_write": false,
+    "production_change": false,
+    "destructive": false,
+    "security_sensitive": false
+  },
+  "external_actions": {
+    "allowed": [],
+    "evidence": []
+  },
+  "continuity": {
+    "last_agent": null,
+    "current_unit": null,
+    "next_action": null,
+    "last_checkpoint": null,
+    "last_checkpoint_at": null,
+    "last_handoff_at": null
+  }
+}

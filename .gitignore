@@ -1,0 +1,30 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+secrets/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Python protocol tooling
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Common build outputs
+bin/
+obj/
+node_modules/
+dist/
+build/
+coverage/

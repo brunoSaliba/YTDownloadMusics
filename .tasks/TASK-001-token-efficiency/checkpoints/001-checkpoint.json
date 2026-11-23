@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "checkpoint": "001-checkpoint",
+  "task_id": "TASK-001",
+  "created_at": "2026-11-06T16:54:53+00:00",
+  "agent": "Claude Code",
+  "phase": "planning",
+  "current_unit": "token-efficiency",
+  "next_action": "PR para revisão humana",
+  "summary": null,
+  "completed": [],
+  "in_progress": [],
+  "decisions": [],
+  "known_issues": [],
+  "verification": [
+    "docs only; validate"
+  ],
+  "workflow_snapshot": {
+    "gates": {
+      "definition": {
+        "status": "not_required",
+        "approved_by": null,
+        "approved_at": null
+      },
+      "plan": {
+        "status": "not_required",
+        "approved_by": null,
+        "approved_at": null
+      },
+      "security": {
+        "status": "not_required",
+        "approved_by": null,
+        "approved_at": null
+      },
+      "production": {
+        "status": "not_required",
+        "approved_by": null,
+        "approved_at": null
+      }
+    },
+    "status": {
+      "product": "not_required",
+      "specification": "not_required",
+      "architecture": "not_required",
+      "artifact_review": "not_required",
+      "threat_model": "not_required",
+      "planning": "completed",
+      "implementation": "completed",
+      "testing": "completed",
+      "verification": "not_required",
+      "code_review": "completed",
+      "security_review": "not_required",
+      "retrospective": "not_required",
+      "production_plan": "not_required",
+      "production_verification": "not_required"
+    },
+    "repo_write_scope": [
+      "AGENTS.md",
+      ".ai/**",
+      ".tasks/TASK-001-token-efficiency/**"
+    ],
+    "external_actions_allowed": [],
+    "blocked": false,
+    "block_reason": null
+  },
+  "git": {
+    "git_available": true,
+    "branch": "chore/TASK-001-token-efficiency",
+    "head": "e75b8b7d526595ab27977954a4f897dbb11a4c85",
+    "working_tree": "dirty",
+    "changed_files": [
+      ".ai/policies/testing-policy.md",
+      ".ai/roles/orchestrator.md",
+      ".ai/workflows/bugfix.md",
+      ".ai/workflows/resume.md",
+      ".ai/workflows/task.md",
+      ".tasks/TASK-001-token-efficiency/code-review.md",
+      ".tasks/TASK-001-token-efficiency/plan.md",
+      "AGENTS.md"
+    ],
+    "untracked_files": [
+      ".tasks/TASK-001-token-efficiency/code-review.md",
+      ".tasks/TASK-001-token-efficiency/plan.md"
+    ],
+    "working_tree_fingerprint": "e55f79b0a0a896846553433c135a1f0966d9f456aca65140bbdbca6ced4c7bab"
+  }
+}

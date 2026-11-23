@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "ask": [
+      "Read(./docs/**)",
+      "Read(./README.md)",
+      "Read(./CHANGELOG.md)",
+      "Read(./.tasks/FEAT-001-*/**)"
+    ]
+  }
+}

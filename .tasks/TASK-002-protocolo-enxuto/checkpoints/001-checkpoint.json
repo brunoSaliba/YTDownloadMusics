@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "checkpoint": "001-checkpoint",
+  "task_id": "TASK-002",
+  "created_at": "2026-11-06T18:38:43+00:00",
+  "agent": "Claude Code",
+  "phase": "planning",
+  "current_unit": "lean-protocol",
+  "next_action": "PR",
+  "summary": null,
+  "completed": [],
+  "in_progress": [],
+  "decisions": [],
+  "known_issues": [],
+  "verification": [
+    "25 unit tests pass"
+  ],
+  "workflow_snapshot": {
+    "gates": {
+      "definition": {
+        "status": "not_required",
+        "approved_by": null,
+        "approved_at": null
+      },
+      "plan": {
+        "status": "not_required",
+        "approved_by": null,
+        "approved_at": null
+      },
+      "security": {
+        "status": "not_required",
+        "approved_by": null,
+        "approved_at": null
+      },
+      "production": {
+        "status": "not_required",
+        "approved_by": null,
+        "approved_at": null
+      }
+    },
+    "status": {
+      "product": "not_required",
+      "specification": "not_required",
+      "architecture": "not_required",
+      "artifact_review": "not_required",
+      "threat_model": "not_required",
+      "planning": "completed",
+      "implementation": "completed",
+      "testing": "completed",
+      "verification": "not_required",
+      "code_review": "completed",
+      "security_review": "not_required",
+      "retrospective": "not_required",
+      "production_plan": "not_required",
+      "production_verification": "not_required"
+    },
+    "repo_write_scope": [
+      "AGENTS.md",
+      "README.md",
+      "docs/**",
+      ".ai/**",
+      "tools/**",
+      ".github/pull_request_template.md",
+      ".tasks/TASK-002-protocolo-enxuto/**"
+    ],
+    "external_actions_allowed": [],
+    "blocked": false,
+    "block_reason": null
+  },
+  "git": {
+    "git_available": true,
+    "branch": "chore/TASK-002-lean-protocol",
+    "head": "71ae4ee5c110e77e3a86e0aa6564b440f55b65e8",
+    "working_tree": "dirty",
+    "changed_files": [
+      ".ai/dependency-governance.md",
+      ".ai/methodology.md",
+      ".ai/policies/definition-of-done.md",
+      ".ai/policies/testing-policy.md",
+      ".ai/roles/tester.md",
+      ".ai/roles/verifier.md",
+      ".ai/rubrics/security-risk.md",
+      ".ai/security/security-review-checklist.md",
+      ".ai/templates/architecture.md",
+      ".ai/templates/plan.md",
+      ".ai/templates/prd.md",
+      ".ai/templates/production-plan.md",
+      ".ai/templates/retrospective.md",
+      ".ai/templates/review.md",
+      ".ai/templates/security-review.md",
+      ".ai/templates/session-handoff.md",
+      ".ai/templates/specification.md",
+      ".ai/templates/state.json",
+      ".ai/templates/threat-model.md",
+      ".ai/workflows/epic.md",
+      ".ai/workflows/feature.md",
+      ".ai/workflows/hotfix.md",
+      ".ai/workflows/init-project.md",
+      ".ai/workflows/production-change.md",
+      ".ai/workflows/security-sensitive-change.md",
+      ".github/pull_request_template.md",
+      ".tasks/TASK-001-token-efficiency/checkpoints/003-checkpoint.json",
+      ".tasks/TASK-001-token-efficiency/state.json",
+      ".tasks/TASK-002-protocolo-enxuto/plan.md",
+      "AGENTS.md",
+      "README.md",
+      "docs/how-to-use.md",
+      "tools/aip.py",
+      "tools/tests/test_aip.py"
+    ],
+    "untracked_files": [
+      ".tasks/TASK-002-protocolo-enxuto/plan.md"
+    ],
+    "working_tree_fingerprint": "bd22256c63ed5a19b2fa6fd47cbb7ad2d0901b20c9794c7d9121b483e5f895f0"
+  }
+}

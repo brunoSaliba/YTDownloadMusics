@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "checkpoint": "001-checkpoint",
+  "task_id": "FEAT-001",
+  "created_at": "2026-08-26T20:48:13+00:00",
+  "agent": "Cursor Grok 4.6",
+  "phase": "awaiting_security_gate",
+  "current_unit": "Independent verification, reviews, and retrospective",
+  "next_action": "Human Security Gate; do not treat agent security-review.md as approval",
+  "summary": "Reconciled FEAT-001 with main implementation. Removed Postgres host-publish exception. Added production-overlay inventory commands. Reviews complete. Security Gate pending.",
+  "completed": [
+    "Implementation re-verified on main",
+    "Protocol tests 23/23",
+    "verification.md",
+    "code-review.md",
+    "security-review.md",
+    "retrospective.md"
+  ],
+  "in_progress": [],
+  "decisions": [
+    "Did not expand standard with SHA-pin or publish.yml permissions; those remain residual Medium for Security Gate",
+    "Did not record Security Gate approval"
+  ],
+  "known_issues": [
+    "Policy already on main before Security Gate",
+    "No durable markdown invariant tests (tools/ out of write-scope)"
+  ],
+  "verification": [
+    "python -m unittest tools.tests.test_aip -v: 23 passed",
+    "grep: no ghp_/github_pat_/0.0.0.0 in implementation files"
+  ],
+  "workflow_snapshot": {
+    "gates": {
+      "definition": {
+        "status": "approved",
+        "approved_by": "Bruno Saliba",
+        "approved_at": "2026-08-26T13:01:57+00:00"
+      },
+      "plan": {
+        "status": "approved",
+        "approved_by": "Bruno Saliba",
+        "approved_at": "2026-08-26T13:02:00+00:00"
+      },
+      "security": {
+        "status": "pending",
+        "approved_by": null,
+        "approved_at": null
+      },
+      "production": {
+        "status": "not_required",
+        "approved_by": null,
+        "approved_at": null
+      }
+    },
+    "status": {
+      "product": "completed",
+      "specification": "completed",
+      "architecture": "completed",
+      "artifact_review": "completed",
+      "threat_model": "completed",
+      "planning": "completed",
+      "implementation": "completed",
+      "testing": "completed",
+      "verification": "completed",
+      "code_review": "completed",
+      "security_review": "completed",
+      "retrospective": "completed",
+      "production_plan": "not_required",
+      "production_verification": "not_required"
+    },
+    "repo_write_scope": [
+      "AGENTS.md",
+      ".ai/deployment-standard.md",
+      ".ai/platforms/bneli-vps.md",
+      ".ai/workflows/init-project.md",
+      ".ai/workflows/init-existing-project.md",
+      ".ai/workflows/production-change.md",
+      ".tasks/FEAT-001-sohma-deployment-standard/**"
+    ],
+    "external_actions_allowed": [],
+    "blocked": false,
+    "block_reason": null
+  },
+  "git": {
+    "git_available": true,
+    "branch": "fix/FEAT-001-governance-reconciliation",
+    "head": "dacb5b235a85cca3e8be10e7aae1ed56f58ef2db",
+    "working_tree": "dirty",
+    "changed_files": [
+      ".ai/deployment-standard.md",
+      ".ai/platforms/bneli-vps.md",
+      ".ai/workflows/production-change.md",
+      ".memory-bank/ops/README.md",
+      ".memory-bank/ops/sohma-vps-ghcr-deployment.md",
+      ".tasks/FEAT-001-sohma-deployment-standard/code-review.md",
+      ".tasks/FEAT-001-sohma-deployment-standard/retrospective.md",
+      ".tasks/FEAT-001-sohma-deployment-standard/security-review.md",
+      ".tasks/FEAT-001-sohma-deployment-standard/verification.md"
+    ],
+    "untracked_files": [
+      ".memory-bank/ops/sohma-vps-ghcr-deployment.md",
+      ".tasks/FEAT-001-sohma-deployment-standard/code-review.md",
+      ".tasks/FEAT-001-sohma-deployment-standard/retrospective.md",
+      ".tasks/FEAT-001-sohma-deployment-standard/security-review.md",
+      ".tasks/FEAT-001-sohma-deployment-standard/verification.md"
+    ],
+    "working_tree_fingerprint": null
+  }
+}
