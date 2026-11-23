@@ -5,5 +5,5 @@
 - `GET /api/download/{id}` → child `python -m app.worker download <id> <tmpdir>`; yt-dlp re-checks duration/live via `match_filter` before downloading, converts to MP3 192k with tags + cover; the MP3 (≤ ~22 MB by the duration cap) is read into memory and the temp dir deleted before responding; `sweep_stale_workdirs` deletes leftovers > 10 min.
 - Child processes (`app/jobs.py`): fixed argv, no shell, own process group, killed on timeout (info 45 s, download 240 s). Worker prints one JSON line; error codes map to HTTP in `main.ERRORS` (400/422/502/503/504).
 - Concurrency: non-blocking semaphores, 2 info / 2 downloads per process (limits memory under the 768m cap) → 503.
-- yt-dlp hardening: only the canonical URL rebuilt from the ID, `allowed_extractors=["youtube"]`, `noplaylist`, `cachedir=False`, `max_filesize`, `YTDLP_NO_PLUGINS=1`; Deno runs via yt-dlp-ejs with no permissions.
+- yt-dlp hardening: only the canonical URL rebuilt from the ID, `allowed_extractors=["youtube"]`, `noplaylist`, `cachedir=False`, `max_filesize`, `YTDLP_NO_PLUGINS=1`; optional `FORCE_IPV6=1` binds yt-dlp to IPv6 (`source_address="::"`); Deno runs via yt-dlp-ejs with no permissions.
 - No DB, no persistent storage, no runtime secrets. Config via env (see `deploy/.env.example`).

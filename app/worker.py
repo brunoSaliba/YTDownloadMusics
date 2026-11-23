@@ -40,7 +40,7 @@ class _StderrLogger:
 
 
 def base_opts(settings: Settings) -> dict:
-    return {
+    opts = {
         "quiet": True,
         "no_warnings": True,
         "noprogress": True,
@@ -54,6 +54,10 @@ def base_opts(settings: Settings) -> dict:
         "max_filesize": settings.max_filesize_mb * 1024 * 1024,
         "logger": _StderrLogger(),
     }
+    if settings.force_ipv6:
+        # YouTube may block a host's IPv4 ("not a bot"); bind to IPv6 only.
+        opts["source_address"] = "::"
+    return opts
 
 
 def check_info(info: dict, settings: Settings) -> None:

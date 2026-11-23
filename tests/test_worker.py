@@ -103,3 +103,10 @@ def test_main_rejects_invalid_id_without_running_ytdlp(capsys):
 )
 def test_classify_error(message, code):
     assert worker.classify_error(Exception(message)) == code
+
+
+def test_force_ipv6_binds_source_address_only_when_enabled():
+    from dataclasses import replace
+
+    assert "source_address" not in worker.base_opts(SETTINGS)
+    assert worker.base_opts(replace(SETTINGS, force_ipv6=True))["source_address"] == "::"
