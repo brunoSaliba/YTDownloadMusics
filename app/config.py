@@ -21,6 +21,7 @@ class Settings:
     info_timeout_seconds: int
     max_filesize_mb: int
     force_ipv6: bool = False
+    cookies_file: str = "/run/secrets/youtube_cookies"
 
 
 def _flag(name: str) -> bool:
@@ -36,4 +37,5 @@ def load_settings() -> Settings:
         info_timeout_seconds=_positive_int("INFO_TIMEOUT_SECONDS", 45),
         max_filesize_mb=_positive_int("MAX_FILESIZE_MB", 100),
         force_ipv6=_flag("FORCE_IPV6"),
+        cookies_file=os.environ.get("YOUTUBE_COOKIES_FILE", "/run/secrets/youtube_cookies"),
     )

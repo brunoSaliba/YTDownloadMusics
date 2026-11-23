@@ -1,0 +1,101 @@
+{
+  "schema_version": 4,
+  "id": "FEAT-002",
+  "title": "Cookies do YouTube para contornar bloqueio de IP",
+  "track": "FEATURE",
+  "complexity": 3,
+  "phase": "implementation",
+  "blocked": false,
+  "block_reason": null,
+  "security": {
+    "risk": "high",
+    "security_sensitive": true,
+    "threat_model_required": true,
+    "security_review_required": true
+  },
+  "effects": {
+    "repo_write": true,
+    "external_write": true,
+    "production_change": true,
+    "destructive": false,
+    "security_sensitive": true
+  },
+  "gates": {
+    "definition": {
+      "status": "not_required",
+      "approved_by": null,
+      "approved_at": null
+    },
+    "plan": {
+      "status": "approved",
+      "approved_by": "Bruno Saliba",
+      "approved_at": "2026-11-23T18:18:43+00:00"
+    },
+    "security": {
+      "status": "not_required",
+      "approved_by": null,
+      "approved_at": null
+    },
+    "production": {
+      "status": "pending",
+      "approved_by": null,
+      "approved_at": null
+    }
+  },
+  "repo_write_scope": [
+    "app/config.py",
+    "app/worker.py",
+    "tests/test_worker.py",
+    "deploy/docker-compose.yml",
+    "deploy/.env.example",
+    ".gitignore",
+    "SECURITY.md",
+    ".memory-bank/**",
+    ".tasks/FEAT-002-cookies-do-youtube-para-contornar-bloqueio-de-ip/**"
+  ],
+  "external_actions": {
+    "allowed": [
+      {
+        "plugin": "gh",
+        "action": "push branch + open PR",
+        "effect": "EXTERNAL_WRITE",
+        "target": "github.com/brunoSaliba/YTDownloadMusics",
+        "purpose": "Entregar FEAT-002 para revisão humana"
+      },
+      {
+        "plugin": "operator-ssh",
+        "action": "instalar youtube-cookies.txt + compose up",
+        "effect": "PRODUCTION_CHANGE",
+        "target": "VPS bneli.tech /opt/ytdownloadmusics",
+        "purpose": "Production plan do plan.md, executado pelo operador humano"
+      }
+    ],
+    "evidence": []
+  },
+  "continuity": {
+    "last_agent": "claude-opus-5-5",
+    "current_unit": null,
+    "next_action": null,
+    "last_checkpoint": "001-checkpoint.json",
+    "last_checkpoint_at": "2026-11-23T18:25:24+00:00",
+    "last_handoff_at": null
+  },
+  "status": {
+    "product": "not_required",
+    "specification": "not_required",
+    "architecture": "not_required",
+    "artifact_review": "completed",
+    "threat_model": "completed",
+    "planning": "completed",
+    "implementation": "completed",
+    "testing": "completed",
+    "verification": "not_required",
+    "code_review": "completed",
+    "security_review": "completed",
+    "retrospective": "not_required",
+    "production_plan": "completed",
+    "production_verification": "pending"
+  },
+  "created_at": "2026-11-23T18:11:32+00:00",
+  "updated_at": "2026-11-23T18:25:24+00:00"
+}

@@ -13,6 +13,7 @@ This root policy applies to the whole repository unless a nested `SECURITY.md` d
 - Assets: availability of the shared VPS, image/pipeline integrity, VPS IP reputation. Data: Public metadata; Internal IPs in NGINX logs. No accounts, secrets or persistent user data.
 - Project invariants (threat model in `.tasks/PROJ-000-init/plan.md`): I1 only the canonical URL rebuilt from a validated 11-char ID reaches yt-dlp (youtube extractor only); I2 no shell, fixed child argv; I3 server-generated paths and sanitized `Content-Disposition`; I4 duration/live/size validated in the download path, bounded concurrency, killable timeouts, temp cleanup, NGINX rate limits; I5 metadata rendered via `textContent`, strict CSP, server-built thumbnail URL; I6 non-root, read-only container, `cap_drop ALL`, loopback-only; I7 least-privilege CI, SHA-pinned actions, publish only after tests + Trivy.
 - Accepted risk (owner, 2026-11-23): YouTube ToS/copyright exposure; possible blocking of the VPS IP by YouTube.
+- Secret (FEAT-002): optional cookies of a **burner** YouTube account, mounted read-only as a Compose secret (`/run/secrets/youtube_cookies`, host file uid 10001 / 0400), never in Git, image or CI. Invariants C1–C5 (`.tasks/FEAT-002-*/plan.md`): only well-formed `youtube.com`/`google.com` Netscape lines reach yt-dlp, via a per-job 0600 copy in tmpfs that is deleted after the job; cookie values are redacted from worker stderr; unusable file → run without cookies. Residual: account ban/expiry, root on VPS can read the file.
 
 ## Threat Model and Trust Boundaries
 

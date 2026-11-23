@@ -8,6 +8,10 @@ services:
     env_file:
       - path: .env
         required: false
+    secrets:
+      # YouTube cookies (burner account). File must exist (empty = feature off),
+      # owned by uid 10001, mode 0400. Never commit it. See .memory-bank/ops/deploy.md.
+      - youtube_cookies
     ports:
       - "127.0.0.1:8010:8080"
     init: true
@@ -32,3 +36,7 @@ networks:
   default:
     # IPv6 egress so FORCE_IPV6=1 works when YouTube blocks the host IPv4 (Docker Engine >= 27).
     enable_ipv6: true
+
+secrets:
+  youtube_cookies:
+    file: ./youtube-cookies.txt

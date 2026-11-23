@@ -5,9 +5,14 @@ whole process group on timeout. Receives only a validated video ID (never a
 user URL) and prints exactly one JSON line to stdout.
 """
 
+import contextlib
 import json
 import os
+import re
+import shutil
+import stat
 import sys
+import tempfile
 
 # Defense in depth (also set in the Dockerfile): never load yt-dlp plugins.
 os.environ["YTDLP_NO_PLUGINS"] = "1"
@@ -16,6 +21,7 @@ from yt_dlp import YoutubeDL  # noqa: E402
 from yt_dlp.utils import DownloadError  # noqa: E402
 
 from app.config import Settings, load_settings
+from app.jobs import WORKDIR_PREFIX
 from app.validation import canonical_url, is_valid_video_id, thumbnail_url
 
 
@@ -23,6 +29,43 @@ class JobError(Exception):
     def __init__(self, code: str):
         super().__init__(code)
         self.code = code
+
+
+COOKIE_MAX_BYTES = 1024 * 1024
+COOKIE_DOMAINS = ("youtube.com", "google.com")
+COOKIE_HEADER = "# Netscape HTTP Cookie File\n"
+
+# Cookie values of the current job, redacted from anything written to stderr (C2).
+_SECRETS: list[str] = []
+
+
+def _redact(msg: object) -> str:
+    text = str(msg)
+    for secret in _SECRETS:
+        text = text.replace(secret, "***")
+    return text
+
+
+# Any control char but TAB (e.g. a stray CR) would split the line again inside
+# yt-dlp, which then echoes the fragments raw to stderr (C2).
+_CONTROL_CHARS = re.compile(r"[\x00-\x08\x0a-\x1f\x7f]")
+
+
+class _RedactingStream:
+    """stderr wrapper: yt-dlp's write_string() bypasses the logger (C2)."""
+
+    def __init__(self, stream):
+        self._stream = stream
+        self.encoding = getattr(stream, "encoding", "utf-8")
+
+    def write(self, text):
+        return self._stream.write(_redact(text))
+
+    def flush(self):
+        self._stream.flush()
+
+    def isatty(self):
+        return False
 
 
 class _StderrLogger:
@@ -33,13 +76,88 @@ class _StderrLogger:
         pass
 
     def warning(self, msg):
-        print(msg, file=sys.stderr)
+        print(_redact(msg), file=sys.stderr)
 
     def error(self, msg):
-        print(msg, file=sys.stderr)
+        print(_redact(msg), file=sys.stderr)
 
 
-def base_opts(settings: Settings) -> dict:
+def _read_cookie_source(path: str) -> str | None:
+    """Read the operator cookie file once: regular file, no symlink, <= 1 MiB (C5)."""
+    if not path:
+        return None
+    try:
+        fd = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_BINARY", 0))
+    except OSError:
+        return None
+    try:
+        if not stat.S_ISREG(os.fstat(fd).st_mode):
+            return None
+        data = b""
+        while len(data) <= COOKIE_MAX_BYTES:
+            chunk = os.read(fd, COOKIE_MAX_BYTES + 1 - len(data))
+            if not chunk:
+                break
+            data += chunk
+    except OSError:
+        return None
+    finally:
+        os.close(fd)
+    if not data or len(data) > COOKIE_MAX_BYTES:
+        return None
+    return data.decode("utf-8", errors="replace")
+
+
+def _valid_cookie_line(line: str) -> bool:
+    if _CONTROL_CHARS.search(line):
+        return False
+    fields = line.split("\t")
+    if len(fields) != 7:
+        return False
+    raw_domain = fields[0].removeprefix("#HttpOnly_")
+    domain = raw_domain.lstrip(".").lower()
+    if not any(domain == d or domain.endswith("." + d) for d in COOKIE_DOMAINS):
+        return False
+    # MozillaCookieJar rejects the whole file unless the flag matches the leading dot.
+    if fields[1] != ("TRUE" if raw_domain.startswith(".") else "FALSE"):
+        return False
+    expires = fields[4]
+    return fields[3] in ("TRUE", "FALSE") and expires.isascii() and expires.isdigit() and fields[5] != ""
+
+
+def filter_cookie_lines(text: str) -> list[str]:
+    """Keep only well-formed Netscape lines for YouTube/Google (C1, C2)."""
+    lines = (raw.rstrip("\r") for raw in text.split("\n"))
+    return [line for line in lines if _valid_cookie_line(line)]
+
+
+@contextlib.contextmanager
+def cookie_copy(settings: Settings):
+    """Yield a private, filtered, per-job copy of the cookie file, or None (C3, C4)."""
+    text = _read_cookie_source(settings.cookies_file)
+    lines = filter_cookie_lines(text) if text else []
+    if not lines:
+        yield None
+        return
+    values = (line.split("\t")[6] for line in lines)
+    _SECRETS.extend(v for v in values if len(v) >= 8)
+    tmpdir = None
+    try:
+        tmpdir = tempfile.mkdtemp(prefix=WORKDIR_PREFIX)
+        path = os.path.join(tmpdir, "cookies.txt")
+        fd = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
+        with os.fdopen(fd, "w", encoding="utf-8") as fh:
+            fh.write(COOKIE_HEADER + "\n".join(lines) + "\n")
+    except OSError:
+        path = None  # cannot stage cookies: run without them (C4)
+    try:
+        yield path
+    finally:
+        if tmpdir:
+            shutil.rmtree(tmpdir, ignore_errors=True)
+
+
+def base_opts(settings: Settings, cookiefile: str | None = None) -> dict:
     opts = {
         "quiet": True,
         "no_warnings": True,
@@ -57,6 +175,8 @@ def base_opts(settings: Settings) -> dict:
     if settings.force_ipv6:
         # YouTube may block a host's IPv4 ("not a bot"); bind to IPv6 only.
         opts["source_address"] = "::"
+    if cookiefile:
+        opts["cookiefile"] = cookiefile
     return opts
 
 
@@ -102,15 +222,17 @@ def _ensure_same_video(info: dict, video_id: str) -> None:
         raise JobError("unavailable")
 
 
-def run_info(video_id: str, settings: Settings, ydl_cls=YoutubeDL) -> dict:
-    with ydl_cls(base_opts(settings) | {"format": "bestaudio/best"}) as ydl:
+def run_info(video_id: str, settings: Settings, ydl_cls=None) -> dict:
+    opts = {"format": "bestaudio/best"}
+    ydl_cls = ydl_cls or YoutubeDL
+    with cookie_copy(settings) as cookiefile, ydl_cls(base_opts(settings, cookiefile) | opts) as ydl:
         info = ydl.extract_info(canonical_url(video_id), download=False)
     _ensure_same_video(info, video_id)
     check_info(info, settings)
     return public_info(info, video_id)
 
 
-def run_download(video_id: str, workdir: str, settings: Settings, ydl_cls=YoutubeDL) -> dict:
+def run_download(video_id: str, workdir: str, settings: Settings, ydl_cls=None) -> dict:
     """Download + convert to MP3, re-validating limits before any media download."""
     rejected: list[JobError] = []
 
@@ -125,7 +247,7 @@ def run_download(video_id: str, workdir: str, settings: Settings, ydl_cls=Youtub
             return exc.code
         return None
 
-    opts = base_opts(settings) | {
+    opts = {
         "format": "bestaudio/best",
         "paths": {"home": workdir, "temp": workdir},
         "outtmpl": {"default": "%(id)s.%(ext)s"},
@@ -139,7 +261,8 @@ def run_download(video_id: str, workdir: str, settings: Settings, ydl_cls=Youtub
             {"key": "EmbedThumbnail"},
         ],
     }
-    with ydl_cls(opts) as ydl:
+    ydl_cls = ydl_cls or YoutubeDL
+    with cookie_copy(settings) as cookiefile, ydl_cls(base_opts(settings, cookiefile) | opts) as ydl:
         info = ydl.extract_info(canonical_url(video_id), download=True)
     if rejected:
         raise rejected[0]
@@ -158,6 +281,7 @@ def main(argv: list[str]) -> int:
         _emit({"ok": False, "error": "invalid"})
         return 2
     mode, video_id = argv[0], argv[1]
+    sys.stderr = _RedactingStream(sys.stderr)
     settings = load_settings()
     try:
         if mode == "info" and len(argv) == 2:
@@ -171,11 +295,11 @@ def main(argv: list[str]) -> int:
         _emit({"ok": False, "error": exc.code})
         return 1
     except DownloadError as exc:
-        print(str(exc)[:500], file=sys.stderr)
+        print(_redact(exc)[:500], file=sys.stderr)
         _emit({"ok": False, "error": classify_error(exc)})
         return 1
     except Exception as exc:  # noqa: BLE001 - child must always answer with JSON
-        print(f"{type(exc).__name__}: {str(exc)[:500]}", file=sys.stderr)
+        print(f"{type(exc).__name__}: {_redact(exc)[:500]}", file=sys.stderr)
         _emit({"ok": False, "error": "failed"})
         return 1
     _emit({"ok": True, "info": result})
