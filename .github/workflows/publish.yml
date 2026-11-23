@@ -52,6 +52,8 @@ jobs:
           image-ref: ${{ env.IMAGE }}:${{ github.sha }}
           severity: CRITICAL,HIGH
           ignore-unfixed: true
+          # yt-dlp ships a public AWS key ID for an unused extractor (Shahid); human-approved false positive.
+          skip-files: "**/yt_dlp/extractor/shahid.py"
           exit-code: "1"
 
       - uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4.8.0

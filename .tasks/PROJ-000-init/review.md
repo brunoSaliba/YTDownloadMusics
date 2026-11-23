@@ -48,6 +48,7 @@ Fresh subagent reviewer (not the author), 2026-11-23, read-only.
 - I6 OK: non-root, read-only, tmpfs noexec, cap_drop ALL, no-new-privileges, pids_limit, loopback-only.
 - I7 OK: `contents: read` default, `packages: write` only in publish job after CI + Trivy on the exact image, `persist-credentials: false`, SHA-pinned actions, no `pull_request_target`, hash-pinned requirements.
 - Low: L1 IPv6 /128 rate-limit key (accepted; global slots bound damage) · L2 concurrent workers vs 768m (mitigated: info slots 4→2 by human decision; residual OOM risk only if all 4 peak at once — container restarts, verify on VPS) · L3 plugins only via env (fixed in worker.py) · L4 HTTPS redirect/HSTS/`server_tokens` (server_tokens added; HSTS note for post-certbot) · L5 mutable `latest` (deploy doc: prefer `IMAGE_TAG=<sha>`).
+- CI scanner exception (human-approved 2026-11-23): Trivy `skip-files` for `**/yt_dlp/extractor/shahid.py` only — upstream yt-dlp embeds a public AWS key ID for the Shahid extractor, unreachable here (`allowed_extractors=["youtube"]`). Not a project secret; scope limited to that one file. Debian zlib CVE-2026-85091 fixed via `apt-get upgrade` in the runtime stage.
 - Residual risk: ffmpeg/yt-dlp parse remote media (contained by container sandbox); distributed DoS against global slots; Action SHAs resolved via GitHub API but not independently re-verified by reviewer; Deno inherits env (keep `.env` secret-free); YouTube ToS/copyright and IP blocking (accepted by owner).
 
 ## Plan review (fresh reviewer, 2026-11-23)

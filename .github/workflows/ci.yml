@@ -66,4 +66,6 @@ jobs:
           image-ref: ytdownloadmusics-web:ci
           severity: CRITICAL,HIGH
           ignore-unfixed: true
+          # yt-dlp ships a public AWS key ID for an unused extractor (Shahid); human-approved false positive.
+          skip-files: "**/yt_dlp/extractor/shahid.py"
           exit-code: "1"
