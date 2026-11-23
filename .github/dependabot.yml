@@ -16,3 +16,42 @@ updates:
       - dependency-name: "*"
         update-types:
           - "version-update:semver-major"
+
+  # Python: hash-pinned requirements*.txt.
+  # yt-dlp/yt-dlp-ejs stay ungrouped: they break whenever YouTube changes.
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 2
+    groups:
+      python-minor-and-patch:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "yt-dlp*"
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
+
+  # Base images (python slim, deno). Deno has no other update channel.
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 2
+    groups:
+      docker-minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"

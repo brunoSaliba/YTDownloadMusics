@@ -1,0 +1,91 @@
+{
+  "schema_version": 4,
+  "id": "PROJ-000",
+  "title": "YT Music Downloader - site publico de download de audio do YouTube",
+  "track": "PROJECT",
+  "complexity": 6,
+  "phase": "implementation",
+  "blocked": false,
+  "block_reason": null,
+  "security": {
+    "risk": "medium",
+    "security_sensitive": true,
+    "threat_model_required": true,
+    "security_review_required": true
+  },
+  "effects": {
+    "repo_write": true,
+    "external_write": false,
+    "production_change": false,
+    "destructive": false,
+    "security_sensitive": true
+  },
+  "gates": {
+    "definition": {
+      "status": "not_required",
+      "approved_by": null,
+      "approved_at": null
+    },
+    "plan": {
+      "status": "approved",
+      "approved_by": "Bruno Saliba",
+      "approved_at": "2026-11-23T15:11:19+00:00"
+    },
+    "security": {
+      "status": "not_required",
+      "approved_by": null,
+      "approved_at": null
+    },
+    "production": {
+      "status": "not_required",
+      "approved_by": null,
+      "approved_at": null
+    }
+  },
+  "repo_write_scope": [
+    "app/**",
+    "tests/**",
+    "Dockerfile",
+    ".dockerignore",
+    "pyproject.toml",
+    "requirements*.txt",
+    "deploy/**",
+    ".github/workflows/ci.yml",
+    ".github/workflows/publish.yml",
+    ".github/dependabot.yml",
+    "SECURITY.md",
+    "README.md",
+    ".memory-bank/**",
+    ".tasks/PROJ-000-init/**"
+  ],
+  "external_actions": {
+    "allowed": [],
+    "evidence": []
+  },
+  "continuity": {
+    "last_agent": "claude-opus-5-5",
+    "current_unit": null,
+    "next_action": null,
+    "last_checkpoint": "001-checkpoint.json",
+    "last_checkpoint_at": "2026-11-23T17:03:24+00:00",
+    "last_handoff_at": null
+  },
+  "status": {
+    "product": "completed",
+    "specification": "completed",
+    "architecture": "completed",
+    "artifact_review": "completed",
+    "threat_model": "completed",
+    "planning": "completed",
+    "implementation": "completed",
+    "testing": "completed",
+    "verification": "not_required",
+    "code_review": "completed",
+    "security_review": "completed",
+    "retrospective": "not_required",
+    "production_plan": "not_required",
+    "production_verification": "not_required"
+  },
+  "created_at": "2026-11-23T13:53:22+00:00",
+  "updated_at": "2026-11-23T17:06:47+00:00"
+}

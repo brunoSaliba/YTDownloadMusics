@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Músicas — baixar áudio do YouTube</title>
+  <meta name="description" content="Cole um link do YouTube e baixe o áudio em MP3.">
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <main class="shell">
+    <header class="brand">
+      <span class="brand__mark" aria-hidden="true">♪</span>
+      <h1>Músicas</h1>
+      <p class="brand__tag">Cole um link do YouTube. Receba o MP3.</p>
+    </header>
+
+    <form id="search" class="search" novalidate>
+      <label for="url" class="visually-hidden">Link do YouTube</label>
+      <input id="url" name="url" type="url" inputmode="url" autocomplete="off"
+             placeholder="https://www.youtube.com/watch?v=..." maxlength="2048" required>
+      <button id="search-btn" type="submit">Buscar</button>
+    </form>
+
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+
+    <article id="result" class="card" hidden>
+      <img id="thumb" class="card__thumb" alt="" width="480" height="360">
+      <div class="card__body">
+        <h2 id="title" class="card__title"></h2>
+        <p id="artist" class="card__artist"></p>
+        <p id="duration" class="card__meta"></p>
+        <button id="download-btn" type="button" class="download">Baixar MP3</button>
+      </div>
+    </article>
+
+    <footer class="foot">
+      Vídeos de até 15 minutos · sem playlists · nada é armazenado.
+      Baixe apenas conteúdo que você tem direito de usar.
+    </footer>
+  </main>
+</body>
+</html>

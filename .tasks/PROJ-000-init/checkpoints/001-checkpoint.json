@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "checkpoint": "001-checkpoint",
+  "task_id": "PROJ-000",
+  "created_at": "2026-11-23T17:03:24+00:00",
+  "agent": "claude-opus-5-5",
+  "phase": "implementation",
+  "current_unit": null,
+  "next_action": null,
+  "summary": "Commit 77b757d e PR #1 abertos; aguardando revisão humana. Pendente: verificar download real e memória na VPS após deploy.",
+  "completed": [],
+  "in_progress": [],
+  "decisions": [],
+  "known_issues": [],
+  "verification": [],
+  "workflow_snapshot": {
+    "gates": {
+      "definition": {
+        "status": "not_required",
+        "approved_by": null,
+        "approved_at": null
+      },
+      "plan": {
+        "status": "approved",
+        "approved_by": "Bruno Saliba",
+        "approved_at": "2026-11-23T15:11:19+00:00"
+      },
+      "security": {
+        "status": "not_required",
+        "approved_by": null,
+        "approved_at": null
+      },
+      "production": {
+        "status": "not_required",
+        "approved_by": null,
+        "approved_at": null
+      }
+    },
+    "status": {
+      "product": "completed",
+      "specification": "completed",
+      "architecture": "completed",
+      "artifact_review": "completed",
+      "threat_model": "completed",
+      "planning": "completed",
+      "implementation": "pending",
+      "testing": "completed",
+      "verification": "not_required",
+      "code_review": "completed",
+      "security_review": "completed",
+      "retrospective": "not_required",
+      "production_plan": "not_required",
+      "production_verification": "not_required"
+    },
+    "repo_write_scope": [
+      "app/**",
+      "tests/**",
+      "Dockerfile",
+      ".dockerignore",
+      "pyproject.toml",
+      "requirements*.txt",
+      "deploy/**",
+      ".github/workflows/ci.yml",
+      ".github/workflows/publish.yml",
+      ".github/dependabot.yml",
+      "SECURITY.md",
+      "README.md",
+      ".memory-bank/**",
+      ".tasks/PROJ-000-init/**"
+    ],
+    "external_actions_allowed": [],
+    "blocked": false,
+    "block_reason": null
+  },
+  "git": {
+    "git_available": true,
+    "branch": "feat/proj-000-scaffold",
+    "head": "77b757d953b429f995eb595004abecb5a425ab44",
+    "working_tree": "clean",
+    "changed_files": [],
+    "untracked_files": [],
+    "working_tree_fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

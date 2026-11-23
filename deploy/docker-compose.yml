@@ -1,0 +1,29 @@
+name: ytdownloadmusics
+
+services:
+  web:
+    image: ghcr.io/brunosaliba/ytdownloadmusics/web:${IMAGE_TAG:-latest}
+    pull_policy: always
+    restart: unless-stopped
+    env_file:
+      - path: .env
+        required: false
+    ports:
+      - "127.0.0.1:8010:8080"
+    init: true
+    read_only: true
+    tmpfs:
+      - /tmp:size=256m,mode=1777,noexec,nosuid,nodev
+    mem_limit: 768m
+    cpus: 1.0
+    pids_limit: 128
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    stop_grace_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

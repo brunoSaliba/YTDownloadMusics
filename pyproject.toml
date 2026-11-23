@@ -1,0 +1,24 @@
+[project]
+name = "ytdownloadmusics"
+version = "0.1.0"
+description = "Site público para baixar o áudio (MP3) de vídeos do YouTube."
+requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+extend-exclude = ["tools", ".venv"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "S", "UP"]
+ignore = ["S101"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S"]
+
+[tool.bandit]
+exclude_dirs = ["tests", ".venv", "tools"]
