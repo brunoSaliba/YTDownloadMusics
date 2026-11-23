@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "checkpoint": "001-checkpoint",
+  "task_id": "FEAT-002",
+  "created_at": "2026-11-23T18:25:24+00:00",
+  "agent": "claude-opus-5-5",
+  "phase": "implementation",
+  "current_unit": null,
+  "next_action": null,
+  "summary": "Implementação, testes, code review e security review concluídos; pendente commit/PR (aguarda pedido do usuário) e Production plan na VPS.",
+  "completed": [],
+  "in_progress": [],
+  "decisions": [],
+  "known_issues": [],
+  "verification": [],
+  "workflow_snapshot": {
+    "gates": {
+      "definition": {
+        "status": "not_required",
+        "approved_by": null,
+        "approved_at": null
+      },
+      "plan": {
+        "status": "approved",
+        "approved_by": "Bruno Saliba",
+        "approved_at": "2026-11-23T18:18:43+00:00"
+      },
+      "security": {
+        "status": "not_required",
+        "approved_by": null,
+        "approved_at": null
+      },
+      "production": {
+        "status": "pending",
+        "approved_by": null,
+        "approved_at": null
+      }
+    },
+    "status": {
+      "product": "not_required",
+      "specification": "not_required",
+      "architecture": "not_required",
+      "artifact_review": "completed",
+      "threat_model": "completed",
+      "planning": "completed",
+      "implementation": "completed",
+      "testing": "completed",
+      "verification": "not_required",
+      "code_review": "completed",
+      "security_review": "completed",
+      "retrospective": "not_required",
+      "production_plan": "completed",
+      "production_verification": "pending"
+    },
+    "repo_write_scope": [
+      "app/config.py",
+      "app/worker.py",
+      "tests/test_worker.py",
+      "deploy/docker-compose.yml",
+      "deploy/.env.example",
+      ".gitignore",
+      "SECURITY.md",
+      ".memory-bank/**",
+      ".tasks/FEAT-002-cookies-do-youtube-para-contornar-bloqueio-de-ip/**"
+    ],
+    "external_actions_allowed": [
+      {
+        "plugin": "gh",
+        "action": "push branch + open PR",
+        "effect": "EXTERNAL_WRITE",
+        "target": "github.com/brunoSaliba/YTDownloadMusics",
+        "purpose": "Entregar FEAT-002 para revisão humana"
+      },
+      {
+        "plugin": "operator-ssh",
+        "action": "instalar youtube-cookies.txt + compose up",
+        "effect": "PRODUCTION_CHANGE",
+        "target": "VPS bneli.tech /opt/ytdownloadmusics",
+        "purpose": "Production plan do plan.md, executado pelo operador humano"
+      }
+    ],
+    "blocked": false,
+    "block_reason": null
+  },
+  "git": {
+    "git_available": true,
+    "branch": "feat/FEAT-002-youtube-cookies",
+    "head": "52c3db3f2f8988ded90b0138ddb1c2d1f8fca914",
+    "working_tree": "dirty",
+    "changed_files": [
+      ".gitignore",
+      ".memory-bank/ops/deploy.md",
+      ".memory-bank/system/architecture.md",
+      ".tasks/FEAT-002-cookies-do-youtube-para-contornar-bloqueio-de-ip/plan.md",
+      ".tasks/FEAT-002-cookies-do-youtube-para-contornar-bloqueio-de-ip/review.md",
+      "SECURITY.md",
+      "app/config.py",
+      "app/worker.py",
+      "deploy/.env.example",
+      "deploy/docker-compose.yml",
+      "tests/test_worker.py"
+    ],
+    "untracked_files": [
+      ".tasks/FEAT-002-cookies-do-youtube-para-contornar-bloqueio-de-ip/plan.md",
+      ".tasks/FEAT-002-cookies-do-youtube-para-contornar-bloqueio-de-ip/review.md"
+    ],
+    "working_tree_fingerprint": "856bfa7858f05ca2ff3406d9dcb0bf913324c3c2e7998c55be1c982f4903c538"
+  }
+}

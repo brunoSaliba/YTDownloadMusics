@@ -9,6 +9,7 @@
 *.jks
 *.keystore
 secrets/
+*cookies*.txt
 
 # IDE / OS
 .vscode/
