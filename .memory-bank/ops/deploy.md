@@ -22,4 +22,4 @@
 
 - yt-dlp breaks when YouTube changes: merge Dependabot `yt-dlp*` PRs quickly.
 - Deno is pinned by digest in `Dockerfile` (`denoland/deno:bin-*`); Dependabot `docker` covers it — otherwise bump monthly.
-- If YouTube starts answering "confirm you're not a bot" (HTTP 502 in the app), the VPS IP is blocked; cookies/PO token would be a new security-sensitive FEATURE.
+- If YouTube starts answering "confirm you're not a bot" (HTTP 502 in the app), the VPS IPv4 is likely blocked: set `FORCE_IPV6=1` in `.env` and `docker compose up -d` (needs host IPv6 + the compose network's `enable_ipv6`). If IPv6 is blocked too, cookies/PO token would be a new security-sensitive FEATURE.
