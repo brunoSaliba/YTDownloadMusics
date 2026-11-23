@@ -27,3 +27,8 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+
+networks:
+  default:
+    # IPv6 egress so FORCE_IPV6=1 works when YouTube blocks the host IPv4 (Docker Engine >= 27).
+    enable_ipv6: true
