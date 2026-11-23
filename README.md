@@ -1,3 +1,19 @@
+# YT Music Downloader
+
+Site público (sem conta) para colar um link do YouTube, ver a música (título, artista, capa, duração) e baixar o áudio em MP3 192 kbps com tags e capa. Python/FastAPI + yt-dlp + ffmpeg, em Docker.
+
+- Rodar local: `pip install --require-hashes -r requirements.txt -r requirements-dev.txt` e `uvicorn app.main:app --reload` (precisa de `ffmpeg` e `deno` no PATH para baixar de verdade).
+- Testes: `pytest -q`.
+- Dependências: `requirements.txt`/`requirements-dev.txt` têm hashes e são atualizados pelo Dependabot. Para regerar à mão: `echo "fastapi==X uvicorn==Y yt-dlp[default]==Z" | tr ' ' '
+' | uv pip compile --generate-hashes --python-version 3.12 --python-platform x86_64-unknown-linux-gnu - -o requirements.txt` (dev: `pytest httpx ruff pip-audit bandit[toml]` com `-c requirements.txt`).
+- Docker: `docker build -t ytdownloadmusics . && docker run --rm -p 127.0.0.1:8010:8080 ytdownloadmusics`.
+- Deploy na VPS: `.memory-bank/ops/deploy.md`. Arquitetura: `.memory-bank/system/architecture.md`.
+- Limites padrão: 15 min, sem playlists, 2 conversões simultâneas (ver `deploy/.env.example`).
+
+Baixe apenas conteúdo que você tem direito de usar.
+
+---
+
 # AI Project Template
 
 A vendor-neutral repository template for disciplined AI-assisted software engineering.

@@ -6,6 +6,14 @@ Before product initialization, this repository contains only the AI Engineering 
 
 This root policy applies to the whole repository unless a nested `SECURITY.md` defines stricter component-specific invariants.
 
+## Project: YT Music Downloader
+
+- Surface: public, unauthenticated site `musicas.bneli.tech` (host NGINX → `127.0.0.1:8010`). Endpoints: `/`, `/static/*`, `/healthz`, `/robots.txt`, `POST /api/info`, `GET /api/download/{id}`.
+- Attacker inputs: `url`, `id`, HTTP headers, and YouTube metadata/media processed by yt-dlp, ffmpeg and Deno.
+- Assets: availability of the shared VPS, image/pipeline integrity, VPS IP reputation. Data: Public metadata; Internal IPs in NGINX logs. No accounts, secrets or persistent user data.
+- Project invariants (threat model in `.tasks/PROJ-000-init/plan.md`): I1 only the canonical URL rebuilt from a validated 11-char ID reaches yt-dlp (youtube extractor only); I2 no shell, fixed child argv; I3 server-generated paths and sanitized `Content-Disposition`; I4 duration/live/size validated in the download path, bounded concurrency, killable timeouts, temp cleanup, NGINX rate limits; I5 metadata rendered via `textContent`, strict CSP, server-built thumbnail URL; I6 non-root, read-only container, `cap_drop ALL`, loopback-only; I7 least-privilege CI, SHA-pinned actions, publish only after tests + Trivy.
+- Accepted risk (owner, 2026-11-23): YouTube ToS/copyright exposure; possible blocking of the VPS IP by YouTube.
+
 ## Threat Model and Trust Boundaries
 
 Every project must identify:
