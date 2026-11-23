@@ -5,7 +5,7 @@ import logging
 import os
 import shutil
 import signal
-import subprocess
+import subprocess  # nosec B404
 import sys
 import tempfile
 import threading
@@ -57,7 +57,7 @@ def _kill(proc: subprocess.Popen) -> None:
 def run_worker(args: list[str], timeout: int) -> WorkerResult:
     """Run the worker with fixed argv (no shell); kill its process group on timeout."""
     kwargs = {"start_new_session": True} if os.name == "posix" else {}
-    proc = subprocess.Popen(  # noqa: S603 - fixed argv, validated ID only
+    proc = subprocess.Popen(  # noqa: S603 - fixed argv, validated ID only  # nosec B603
         worker_command(*args),
         stdin=subprocess.DEVNULL,
         stdout=subprocess.PIPE,
